@@ -68,6 +68,11 @@ case $PLATFORM in
           make install
         fi
         ;;
+    linux-mips64el)
+        ./configure --prefix=$INSTALL_PATH CC="$OLDCC -mabi=64" CXX="$OLDCXX -mabi=64" --enable-cxx
+        make -j $MAKEJ
+        make install-strip
+        ;;
     macosx-*)
         patch -Np1 < ../../../hdf5-macosx.patch
         ./configure --prefix=$INSTALL_PATH --enable-cxx
