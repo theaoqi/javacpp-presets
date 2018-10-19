@@ -772,6 +772,59 @@ case $PLATFORM in
         make install
         ;;
 
+    linux-mips64el)
+        cd $ZLIB
+        CC="gcc -mabi=64 -fPIC" ./configure --prefix=$INSTALL_PATH --static
+        make -j $MAKEJ V=0
+        make install
+        cd ../$LAME
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux CFLAGS="-mabi=64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../$SPEEX
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux CFLAGS="-mabi=64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../$OPUS
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux CFLAGS="-mabi=64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../$OPENCORE_AMR
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux CFLAGS="-mabi=64" CXXFLAGS="-mabi=64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../$VO_AMRWBENC
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux CFLAGS="-mabi=64" CXXFLAGS="-mabi=64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../$OPENSSL
+        ./Configure linux64-mips64 -fPIC no-shared --prefix=$INSTALL_PATH
+        make -s -j $MAKEJ
+        make install_sw
+        cd ../openh264-$OPENH264_VERSION
+        make -j $MAKEJ DESTDIR=./ PREFIX=.. AR=ar ARCH=mips64el USE_ASM=No install-static
+        cd ../$X264
+        ./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-opencl --disable-asm --host=mips64el-linux
+        make -j $MAKEJ
+        make install
+        cd ../x265-$X265
+        CC="gcc -mabi=64" CXX="g++ -mabi=64" $CMAKE -DENABLE_SHARED=OFF -DENABLE_LIBNUMA=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=.. source
+        make -j $MAKEJ
+        make install
+        cd ../libvpx-$VPX_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --enable-pic --disable-examples --disable-unit-tests --target=generic-gnu
+        make -j $MAKEJ
+        make install
+        cd ../freetype-$FREETYPE_VERSION
+        ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --enable-static --disable-shared --with-pic CFLAGS="-mabi=64"
+        make -j $MAKEJ
+        make install
+        cd ../ffmpeg-$FFMPEG_VERSION
+        PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-pthreads --enable-libxcb --cc="gcc -mabi=64" --extra-cflags="-I../include/" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm"
+        make -j $MAKEJ
+        make install
+        ;;
+
     macosx-*)
         cd $ZLIB
         CC="clang -fPIC" ./configure --prefix=$INSTALL_PATH --static
