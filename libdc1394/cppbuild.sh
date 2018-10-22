@@ -53,6 +53,11 @@ case $PLATFORM in
         make -j4
         make install-strip
         ;;
+    linux-mips64el)
+        CC="$OLDCC -mabi=64" ./configure --prefix=$INSTALL_PATH --disable-sdltest
+        make -j4
+        make install-strip
+        ;;
     macosx-*)
         patch -Np1 < ../../../libdc1394-$LIBDC1394_VERSION-macosx.patch
         LIBUSB_CFLAGS=-I/usr/local/include/libusb-1.0/ LIBUSB_LIBS="-L/usr/local/lib/ -lusb-1.0" ./configure --prefix=$INSTALL_PATH --disable-sdltest
