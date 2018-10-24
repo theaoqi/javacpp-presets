@@ -412,6 +412,41 @@ case $PLATFORM in
         make -j $MAKEJ
         make install-strip
         ;;
+    linux-mips64el)
+        export CFLAGS="-I$INSTALL_PATH/include/"
+        export CXXFLAGS="$CFLAGS"
+        export CPPFLAGS="$CFLAGS"
+        export LDFLAGS="-L$INSTALL_PATH/lib/"
+        export CC="$OLDCC -mabi=64 -fPIC"
+        cd $ZLIB
+        ./configure --prefix=$INSTALL_PATH --static
+        make -j $MAKEJ
+        make install
+        cd ../$GIFLIB
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux
+        make -j $MAKEJ
+        make install
+        cd ../$LIBJPEG
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux
+        make -j $MAKEJ
+        make install
+        cd ../$LIBPNG
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux
+        make -j $MAKEJ
+        make install
+        cd ../$LIBTIFF
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux --disable-lzma
+        make -j $MAKEJ
+        make install
+        cd ../$LIBWEBP
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=mips64el-linux
+        make -j $MAKEJ
+        make install
+        cd ../leptonica-$LEPTONICA_VERSION
+        PKG_CONFIG_PATH=$INSTALL_PATH/lib/pkgconfig/ ./configure --prefix=$INSTALL_PATH CFLAGS="-pthread -I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" --disable-programs
+        make -j $MAKEJ
+        make install-strip
+        ;;
     macosx-*)
         export CFLAGS="-I$INSTALL_PATH/include/"
         export CXXFLAGS="$CFLAGS"
