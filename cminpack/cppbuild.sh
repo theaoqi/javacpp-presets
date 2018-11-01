@@ -72,6 +72,14 @@ case $PLATFORM in
         make DESTDIR="$INSTALL_PATH" LIBSUFFIX=l install
         make DESTDIR="$INSTALL_PATH" LIBSUFFIX=s install
         ;;
+    linux-mips64el)
+        make -j $MAKEJ CC="gcc -mabi=64 -fPIC" double
+        make -j $MAKEJ CC="gcc -mabi=64 -fPIC" lapack
+        make -j $MAKEJ CC="gcc -mabi=64 -fPIC" float
+        make DESTDIR="$INSTALL_PATH" LIBSUFFIX=  install
+        make DESTDIR="$INSTALL_PATH" LIBSUFFIX=l install
+        make DESTDIR="$INSTALL_PATH" LIBSUFFIX=s install
+        ;;
     macosx-*)
         export CC="$(ls -1 /usr/local/bin/gcc-? | head -n 1)"
         make -j $MAKEJ CC="$CC -fPIC" double

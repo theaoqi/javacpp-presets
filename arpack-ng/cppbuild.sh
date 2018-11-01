@@ -77,6 +77,12 @@ case $PLATFORM in
         make -j $MAKEJ
         make install-strip
         ;;
+    linux-mips64el)
+        set -x
+        CC="gcc -mabi=64" CXX="g++ -mabi=64" FC="gfortran -mabi=64" F77="$FC" ./configure --prefix=$INSTALL_PATH --enable-icb --with-blas=openblas --with-lapack=openblas
+        make -j $MAKEJ
+        make install-strip
+        ;;
     macosx-*)
         sed -i="" 's/install_name \\$rpath/install_name @rpath/g' configure m4/libtool.m4
         export CC="$(ls -1 /usr/local/bin/gcc-? | head -n 1)"
